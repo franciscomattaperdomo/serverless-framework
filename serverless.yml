@@ -1,10 +1,12 @@
 service: crud-serverless-users
+frameworkVersion: ~4.41.1
 org: c642509e-6b8b-4d5c-ad9b-357af8285c43
 app: crud-serverless-users
 provider:
   name: aws
   runtime: nodejs24.x
   region: us-east-1
+  stage: ${opt:stage, 'dev'}
   iam:
     role:
       statements:
