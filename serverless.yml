@@ -2,17 +2,21 @@ service: crud-serverless-users
 frameworkVersion: ~4.41.1
 org: fmattaperdomo3z1c
 app: crud-serverless-users
+
 provider:
   name: aws
   runtime: nodejs24.x
   region: us-east-1
-  stage: ${opt:stage, 'dev'}
   iam:
     role:
       statements:
         - Effect: Allow
           Action: 'dynamodb:*'
           Resource: arn:aws:dynamodb:us-east-1:182355604095:table/usersTable
+
+plugins:
+  - serverless-offline
+  - serverless-dynamodb-local
 
 package:
   patterns:
@@ -27,6 +31,9 @@ package:
 functions:
   get-users:
     handler: getusers/handler.getUsers
+    package:
+      patterns:
+        - "getusers/handler.js"
     events:
       - http:
           path: users/{id}
@@ -37,6 +44,9 @@ functions:
                 id: true
   create-users:
     handler: createUsers/handler.createUsers
+    package:
+      patterns:
+        - "createUsers/handler.js"
     events:
       - http:
           path: users
@@ -46,6 +56,9 @@ functions:
               application/json: ${file(schemas/user-schema.json)}
   update-users:
     handler: updateUsers/handler.updateUsers
+    package:
+      patterns:
+        - "updateUsers/handler.js"
     events:
       - http:
           path: users/{id}
@@ -59,6 +72,9 @@ functions:
   delete-users:
     handler: deleteUsers/handler.deleteUsers
     runtime: python3.14
+    package:
+      patterns:
+        - "deleteUsers/handler.py"
     events:
       - http:
           path: users/{id}
