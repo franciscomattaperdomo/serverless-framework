@@ -44,7 +44,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{secrets.DEFAULT_SECRET}}
 
     - name: Comment PR
-      uses: thollander/actions-comment-pull-requestgit add .@v1
+      uses: thollander/actions-comment-pull-request@v1
       with:
         message: |
           Your SLS App was deployed!
