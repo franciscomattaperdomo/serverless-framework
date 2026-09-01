@@ -1,5 +1,6 @@
 service: crud-serverless-users
-
+org: c642509e-6b8b-4d5c-ad9b-357af8285c43
+app: crud-serverless-users
 provider:
   name: aws
   runtime: nodejs24.x
