@@ -5,8 +5,8 @@ client = boto3.resource('dynamodb')
 IS_OFFLINE = os.getenv('IS_OFFLINE', False)
 if IS_OFFLINE:
     boto3.Session(
-        aws_access_key_id='ACCESS_KEY',
-        aws_secret_access_key='SECRET_KEY',
+        aws_access_key_id='DEFAULT_ACCESS_KEY',
+        aws_secret_access_key='DEFAULT_SECRET',
     )
     client = boto3.resource('dynamodb', endpoint_url='http://localhost:8000')
 

@@ -1,5 +1,5 @@
 {
-  "name": "hola-mundo",
+  "name": "hello-world",
   "version": "1.0.0",
   "description": "",
   "main": "handler.js",
@@ -8,12 +8,19 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "aws-sdk": "^2.1256.0",
-    "serverless": "^3.21.0",
-    "serverless-offline": "^11.3.0"
-  },
   "dependencies": {
-    "serverless-dynamodb-local": "^0.2.40"
+    "aws-sdk": "^2.1693.0"
+  },
+  "devDependencies": {
+    "install": "^0.13.0",
+    "npm": "^12.0.2",
+    "serverless": "^4.41.1",
+    "serverless-dynamodb": "^0.2.58",
+    "serverless-offline": "^14.8.0"
+  },
+  "overrides": {
+    "serverless-dynamodb": {
+      "serverless": "$serverless"
+    }
   }
 }

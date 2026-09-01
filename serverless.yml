@@ -2,43 +2,28 @@ service: crud-serverless-users
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs24.x
+  region: us-east-1
   iam:
     role:
       statements:
         - Effect: Allow
           Action: 'dynamodb:*'
-          Resource: arn:aws:dynamodb:us-east-1:471893938953:table/usersTable
-
-plugins:
-  - serverless-offline
-  - serverless-dynamodb-local
-
+          Resource: arn:aws:dynamodb:us-east-1:182355604095:table/usersTable
 
 package:
-  individually: true
   patterns:
-    - "!*/**"
-
-
-custom:
-  dynamodb:
-  # If you only want to use DynamoDB Local in some stages, declare them here
-    stages:
-      - dev
-    start:
-      port: 8000
-      inMemory: true
-      migrate: true
-    # Uncomment only if you already have a DynamoDB running locally
-    # noStart: true
+    - '!**/.dynamodb/**'
+    - '!**/.serverless/**'
+    - 'getusers/**'
+    - 'createUsers/**'
+    - 'updateUsers/**'
+    - 'deleteUsers/**'
+    - 'schemas/**'
 
 functions:
   get-users:
     handler: getusers/handler.getUsers
-    package:
-      patterns:
-        - "getusers/handler.js"
     events:
       - http:
           path: users/{id}
@@ -49,9 +34,6 @@ functions:
                 id: true
   create-users:
     handler: createUsers/handler.createUsers
-    package:
-      patterns:
-        - "createUsers/handler.js"
     events:
       - http:
           path: users
@@ -61,9 +43,6 @@ functions:
               application/json: ${file(schemas/user-schema.json)}
   update-users:
     handler: updateUsers/handler.updateUsers
-    package:
-      patterns:
-        - "updateUsers/handler.js"
     events:
       - http:
           path: users/{id}
@@ -76,10 +55,7 @@ functions:
               application/json: ${file(schemas/user-schema.json)}
   delete-users:
     handler: deleteUsers/handler.deleteUsers
-    runtime: python3.8
-    package:
-      patterns:
-        - "deleteUsers/handler.py"
+    runtime: python3.14
     events:
       - http:
           path: users/{id}
@@ -104,24 +80,3 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-    S3Bucket:
-      Type: 'AWS::S3::Bucket'
-      Properties:
-        AccessControl: PublicRead
-        BucketName: bucket-serverless-course-123213
-    SampleBucketPolicy:
-      Type: AWS::S3::BucketPolicy
-      Properties:
-        Bucket: !Ref S3Bucket
-        PolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Action:
-                - 's3:GetObject'
-              Effect: Allow
-              Resource: !Join
-                - ''
-                - - 'arn:aws:s3:::'
-                  - !Ref S3Bucket
-                  - /*
-              Principal: '*'
